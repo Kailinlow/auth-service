@@ -1,0 +1,40 @@
+services:
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    working_dir: /app
+    volumes:
+      - ./target/auth-service-0.0.1-SNAPSHOT.jar:/app/auth-service-0.0.1-SNAPSHOT.jar
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-auth:5432/auth-service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - db-auth
+    networks:
+      - monitoring
+    command: ["java", "-jar", "auth-service-0.0.1-SNAPSHOT.jar"]
+
+
+  db-auth:
+    image: postgres:latest
+    container_name: db-auth
+    environment:
+      POSTGRES_DB: auth-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_auth_data:/var/lib/postgresql/data
+    networks:
+      - monitoring
+
+
+networks:
+  monitoring:
+
+volumes:
+  db_auth_data:
