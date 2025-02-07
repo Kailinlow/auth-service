@@ -1,6 +1,6 @@
 FROM openjdk:23
 
-COPY target/*.jar app.jar
+COPY target/*.jar auth-service-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8081
 
